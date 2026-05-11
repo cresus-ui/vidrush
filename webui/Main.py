@@ -26,6 +26,23 @@ from app.services import llm, voice
 from app.services import task as tm
 from app.utils import utils
 
+# 定义资源目录
+font_dir = os.path.join(root_dir, "resource", "fonts")
+song_dir = os.path.join(root_dir, "resource", "songs")
+i18n_dir = os.path.join(root_dir, "webui", "i18n")
+config_file = os.path.join(root_dir, "webui", ".streamlit", "webui.toml")
+system_locale = utils.get_system_locale()
+
+if "ui_language" not in st.session_state:
+    st.session_state["ui_language"] = config.ui.get("language", system_locale)
+
+# 加载语言文件
+locales = utils.load_locales(i18n_dir)
+
+def tr(key):
+    loc = locales.get(st.session_state["ui_language"], {})
+    return loc.get("Translation", {}).get(key, key)
+
 st.set_page_config(
     page_title="MoneyPrinterTurbo",
     page_icon="🤖",
@@ -47,28 +64,16 @@ h1 {
 """
 st.markdown(streamlit_style, unsafe_allow_html=True)
 
-# 定义资源目录
-font_dir = os.path.join(root_dir, "resource", "fonts")
-song_dir = os.path.join(root_dir, "resource", "songs")
-i18n_dir = os.path.join(root_dir, "webui", "i18n")
-config_file = os.path.join(root_dir, "webui", ".streamlit", "webui.toml")
-system_locale = utils.get_system_locale()
-
-
+# Session State Initializations
 if "video_subject" not in st.session_state:
     st.session_state["video_subject"] = ""
 if "video_script" not in st.session_state:
     st.session_state["video_script"] = ""
 if "video_terms" not in st.session_state:
     st.session_state["video_terms"] = ""
-if "ui_language" not in st.session_state:
-    st.session_state["ui_language"] = config.ui.get("language", system_locale)
 if "local_video_materials" not in st.session_state:
     # 记住用户最近一次已经落盘的本地素材，避免仅修改文案后二次生成时丢失素材列表。
     st.session_state["local_video_materials"] = []
-
-# 加载语言文件
-locales = utils.load_locales(i18n_dir)
 
 # 创建一个顶部栏，包含标题和语言选择
 title_col, lang_col = st.columns([3, 1])
@@ -200,12 +205,8 @@ def init_log():
 
 init_log()
 
-locales = utils.load_locales(i18n_dir)
-
-
-def tr(key):
-    loc = locales.get(st.session_state["ui_language"], {})
-    return loc.get("Translation", {}).get(key, key)
+# locales initialization moved above st.set_page_config
+# def tr(key) moved above st.set_page_config
 
 
 # 创建基础设置折叠框
