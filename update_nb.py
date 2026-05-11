@@ -1,67 +1,42 @@
-{
-  "cells": [
-    {
-      "cell_type": "markdown",
-      "metadata": {},
-      "source": [
+import json
+import os
+
+filepath = 'docs/MoneyPrinterTurbo.ipynb'
+if os.path.exists(filepath):
+    with open(filepath, 'r', encoding='utf-8') as f:
+        nb = json.load(f)
+
+    # Update cells
+    nb['cells'][0]['source'] = [
         "# Guide d'installation Vidrush (MoneyPrinterTurbo)\n",
         "\n",
         "Ce notebook vous guidera dans l'installation et le lancement de [Vidrush](https://github.com/cresus-ui/vidrush) sur Google Colab."
-      ]
-    },
-    {
-      "cell_type": "markdown",
-      "metadata": {},
-      "source": [
+    ]
+
+    nb['cells'][1]['source'] = [
         "## 1. Cloner le dépôt et installer les dépendances\n",
         "\n",
         "Nous allons cloner votre dépôt et installer les paquets nécessaires. \n",
         "*Note : Les messages d'erreur rouges concernant 'pip dependency resolver' sont normaux sur Colab et n'empêchent pas le fonctionnement de l'application.*"
-      ]
-    },
-    {
-      "cell_type": "code",
-      "execution_count": null,
-      "metadata": {
-        "id": "S8Eu-aQarY_B"
-      },
-      "outputs": [
-        {
-          "ename": "",
-          "evalue": "",
-          "output_type": "error",
-          "traceback": [
-            "\u001b[1;31mRunning cells with 'Python 3.13.1' requires the ipykernel package.\n",
-            "\u001b[1;31m<a href='command:jupyter.createPythonEnvAndSelectController'>Create a Python Environment</a> with the required packages.\n",
-            "\u001b[1;31mOr install 'ipykernel' using the command: 'c:/Python313/python.exe -m pip install ipykernel -U --user --force-reinstall'"
-          ]
-        }
-      ],
-      "source": [
+    ]
+
+    nb['cells'][2]['source'] = [
         "!git clone https://github.com/cresus-ui/vidrush.git\n",
         "%cd vidrush\n",
         "# Installation avec gestion des conflits Colab\n",
         "!pip install -r requirements.txt --quiet\n",
         "!pip install pyngrok --quiet"
-      ]
-    },
-    {
-      "cell_type": "markdown",
-      "metadata": {},
-      "source": [
+    ]
+
+    nb['cells'][3]['source'] = [
         "## 2. Configurer ngrok pour l'accès distant\n",
         "\n",
         "Nous utilisons ngrok pour créer un tunnel sécurisé afin d'accéder à l'interface Streamlit depuis votre navigateur.\n",
         "\n",
         "**Important** : Récupérez votre jeton (token) d'authentification sur le [tableau de bord ngrok](https://dashboard.ngrok.com/get-started/your-authtoken)."
-      ]
-    },
-    {
-      "cell_type": "code",
-      "execution_count": null,
-      "metadata": {},
-      "outputs": [],
-      "source": [
+    ]
+
+    nb['cells'][4]['source'] = [
         "from pyngrok import ngrok\n",
         "import getpass\n",
         "\n",
@@ -71,30 +46,15 @@
         "\n",
         "ngrok.kill()\n",
         "ngrok.set_auth_token(authtoken)"
-      ]
-    },
-    {
-      "cell_type": "markdown",
-      "metadata": {},
-      "source": [
+    ]
+
+    nb['cells'][5]['source'] = [
         "## 3. Lancer l'application et générer l'URL publique\n",
         "\n",
         "Démarrage du serveur et création du lien d'accès :"
-      ]
-    },
-    {
-      "cell_type": "code",
-      "execution_count": null,
-      "metadata": {
-        "colab": {
-          "base_uri": "https://localhost:8080/"
-        },
-        "collapsed": true,
-        "id": "oahsIOXmwjl9",
-        "outputId": "ee23a96c-af21-4207-deb7-9fab69e0c05e"
-      },
-      "outputs": [],
-      "source": [
+    ]
+
+    nb['cells'][6]['source'] = [
         "import subprocess\n",
         "import time\n",
         "\n",
@@ -110,22 +70,10 @@
         "\n",
         "print(\"\\n✅ Installation terminée !\")\n",
         "print(f\"Cliquez sur ce lien pour ouvrir l'interface : {public_url}\")"
-      ]
-    }
-  ],
-  "metadata": {
-    "colab": {
-      "provenance": []
-    },
-    "kernelspec": {
-      "display_name": "Python 3",
-      "name": "python3"
-    },
-    "language_info": {
-      "name": "python",
-      "version": "3.13.1"
-    }
-  },
-  "nbformat": 4,
-  "nbformat_minor": 0
-}
+    ]
+
+    with open(filepath, 'w', encoding='utf-8') as f:
+        json.dump(nb, f, ensure_ascii=False, indent=2)
+    print("Notebook updated successfully")
+else:
+    print("Notebook not found")
