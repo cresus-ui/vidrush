@@ -32,11 +32,8 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="auto",
     menu_items={
-        "Report a bug": "https://github.com/harry0703/MoneyPrinterTurbo/issues",
-        "About": "# MoneyPrinterTurbo\nSimply provide a topic or keyword for a video, and it will "
-        "automatically generate the video copy, video materials, video subtitles, "
-        "and video background music before synthesizing a high-definition short "
-        "video.\n\nhttps://github.com/harry0703/MoneyPrinterTurbo",
+        "Report a bug": "https://github.com/cresus-ui/vidrush/issues",
+        "About": tr("About Text") + "\n\nhttps://github.com/cresus-ui/vidrush",
     },
 )
 
@@ -285,94 +282,48 @@ if not config.app.get("hide_config", False):
                     llm_base_url = "http://localhost:11434/v1"
 
                 with llm_helper:
-                    tips = """
-                            ##### Ollama配置说明
-                            - **API Key**: 随便填写，比如 123
-                            - **Base Url**: 一般为 http://localhost:11434/v1
-                                - 如果 `MoneyPrinterTurbo` 和 `Ollama` **不在同一台机器上**，需要填写 `Ollama` 机器的IP地址
-                                - 如果 `MoneyPrinterTurbo` 是 `Docker` 部署，建议填写 `http://host.docker.internal:11434/v1`
-                            - **Model Name**: 使用 `ollama list` 查看，比如 `qwen:7b`
-                            """
+                    tips = tr("Ollama Config Tips")
 
             if llm_provider == "openai":
                 if not llm_model_name:
                     llm_model_name = "gpt-3.5-turbo"
                 with llm_helper:
-                    tips = """
-                            ##### OpenAI 配置说明
-                            > 需要VPN开启全局流量模式
-                            - **API Key**: [点击到官网申请](https://platform.openai.com/api-keys)
-                            - **Base Url**: 官方 OpenAI 可留空；如果使用 OpenAI 兼容供应商（例如 OpenRouter），请填写对应的兼容接口地址
-                            - **Model Name**: 填写**有权限**的模型；如果使用兼容供应商，请填写该平台支持的模型 ID
-                            """
+                    tips = tr("OpenAI Config Tips")
 
             if llm_provider == "moonshot":
                 if not llm_model_name:
                     llm_model_name = "moonshot-v1-8k"
                 with llm_helper:
-                    tips = """
-                            ##### Moonshot 配置说明
-                            - **API Key**: [点击到官网申请](https://platform.moonshot.cn/console/api-keys)
-                            - **Base Url**: 固定为 https://api.moonshot.cn/v1
-                            - **Model Name**: 比如 moonshot-v1-8k，[点击查看模型列表](https://platform.moonshot.cn/docs/intro#%E6%A8%A1%E5%9E%8B%E5%88%97%E8%A1%A8)
-                            """
+                    tips = tr("Moonshot Config Tips")
             if llm_provider == "oneapi":
                 if not llm_model_name:
                     llm_model_name = (
                         "claude-3-5-sonnet-20240620"  # 默认模型，可以根据需要调整
                     )
                 with llm_helper:
-                    tips = """
-                        ##### OneAPI 配置说明
-                        - **API Key**: 填写您的 OneAPI 密钥
-                        - **Base Url**: 填写 OneAPI 的基础 URL
-                        - **Model Name**: 填写您要使用的模型名称，例如 claude-3-5-sonnet-20240620
-                        """
+                    tips = tr("OneAPI Config Tips")
 
             if llm_provider == "qwen":
                 if not llm_model_name:
                     llm_model_name = "qwen-max"
                 with llm_helper:
-                    tips = """
-                            ##### 通义千问Qwen 配置说明
-                            - **API Key**: [点击到官网申请](https://dashscope.console.aliyun.com/apiKey)
-                            - **Base Url**: 留空
-                            - **Model Name**: 比如 qwen-max，[点击查看模型列表](https://help.aliyun.com/zh/dashscope/developer-reference/model-introduction#3ef6d0bcf91wy)
-                            """
+                    tips = tr("Qwen Config Tips")
 
             if llm_provider == "g4f":
                 if not llm_model_name:
                     llm_model_name = "gpt-3.5-turbo"
                 with llm_helper:
-                    tips = """
-                            ##### gpt4free 配置说明
-                            > [GitHub开源项目](https://github.com/xtekky/gpt4free)，可以免费使用GPT模型，但是**稳定性较差**
-                            - **API Key**: 随便填写，比如 123
-                            - **Base Url**: 留空
-                            - **Model Name**: 比如 gpt-3.5-turbo，[点击查看模型列表](https://github.com/xtekky/gpt4free/blob/main/g4f/models.py#L308)
-                            """
+                    tips = tr("G4f Config Tips")
             if llm_provider == "azure":
                 with llm_helper:
-                    tips = """
-                            ##### Azure 配置说明
-                            > [点击查看如何部署模型](https://learn.microsoft.com/zh-cn/azure/ai-services/openai/how-to/create-resource)
-                            - **API Key**: [点击到Azure后台创建](https://portal.azure.com/#view/Microsoft_Azure_ProjectOxford/CognitiveServicesHub/~/OpenAI)
-                            - **Base Url**: 留空
-                            - **Model Name**: 填写你实际的部署名
-                            """
+                    tips = tr("Azure Config Tips")
 
             if llm_provider == "gemini":
                 if not llm_model_name:
                     llm_model_name = "gemini-1.0-pro"
 
                 with llm_helper:
-                    tips = """
-                            ##### Gemini 配置说明
-                            > 需要VPN开启全局流量模式
-                            - **API Key**: [点击到官网申请](https://ai.google.dev/)
-                            - **Base Url**: 留空
-                            - **Model Name**: 比如 gemini-1.0-pro
-                            """
+                    tips = tr("Gemini Config Tips")
 
             if llm_provider == "deepseek":
                 if not llm_model_name:
@@ -380,12 +331,7 @@ if not config.app.get("hide_config", False):
                 if not llm_base_url:
                     llm_base_url = "https://api.deepseek.com"
                 with llm_helper:
-                    tips = """
-                            ##### DeepSeek 配置说明
-                            - **API Key**: [点击到官网申请](https://platform.deepseek.com/api_keys)
-                            - **Base Url**: 固定为 https://api.deepseek.com
-                            - **Model Name**: 固定为 deepseek-chat
-                            """
+                    tips = tr("DeepSeek Config Tips")
 
             if llm_provider == "modelscope":
                 if not llm_model_name:
@@ -393,21 +339,11 @@ if not config.app.get("hide_config", False):
                 if not llm_base_url:
                     llm_base_url = "https://api-inference.modelscope.cn/v1/"
                 with llm_helper:
-                    tips = """
-                            ##### ModelScope 配置说明
-                            - **API Key**: [点击到官网申请](https://modelscope.cn/docs/model-service/API-Inference/intro)
-                            - **Base Url**: 固定为 https://api-inference.modelscope.cn/v1/
-                            - **Model Name**: 比如 Qwen/Qwen3-32B，[点击查看模型列表](https://modelscope.cn/models?filter=inference_type&page=1)
-                            """
+                    tips = tr("ModelScope Config Tips")
 
             if llm_provider == "ernie":
                 with llm_helper:
-                    tips = """
-                            ##### 百度文心一言 配置说明
-                            - **API Key**: [点击到官网申请](https://console.bce.baidu.com/qianfan/ais/console/applicationConsole/application)
-                            - **Secret Key**: [点击到官网申请](https://console.bce.baidu.com/qianfan/ais/console/applicationConsole/application)
-                            - **Base Url**: 填写 **请求地址** [点击查看文档](https://cloud.baidu.com/doc/WENXINWORKSHOP/s/jlil56u11#%E8%AF%B7%E6%B1%82%E8%AF%B4%E6%98%8E)
-                            """
+                    tips = tr("Ernie Config Tips")
 
             if llm_provider == "pollinations":
                 if not llm_model_name:
@@ -431,10 +367,8 @@ if not config.app.get("hide_config", False):
                             - **Model Name**: LiteLLM format — `openai/gpt-4o`, `anthropic/claude-sonnet-4-20250514`, `bedrock/anthropic.claude-3-5-sonnet-20241022-v2:0`, `gemini/gemini-2.5-flash`. See [full provider list](https://docs.litellm.ai/docs/providers)
                             """
 
-            if tips and config.ui["language"] == "zh":
-                st.warning(
-                    "中国用户建议使用 **DeepSeek** 或 **Moonshot** 作为大模型提供商\n- 国内可直接访问，不需要VPN \n- 注册就送额度，基本够用"
-                )
+            if tips:
+                st.warning(tr("China LLM Recommendation"))
                 st.info(tips)
 
             st_llm_api_key = st.text_input(
@@ -622,7 +556,7 @@ with middle_panel:
             # Streamlit 的文件类型校验对扩展名大小写敏感，这里同时放行大小写两种形式。
             local_file_types = ["mp4", "mov", "avi", "flv", "mkv", "jpg", "jpeg", "png"]
             uploaded_files = st.file_uploader(
-                "Upload Local Files",
+                tr("Upload Local Files"),
                 type=local_file_types + [file_type.upper() for file_type in local_file_types],
                 accept_multiple_files=True,
             )
@@ -689,10 +623,10 @@ with middle_panel:
 
         # 添加TTS服务器选择下拉框
         tts_servers = [
-            ("azure-tts-v1", "Azure TTS V1"),
-            ("azure-tts-v2", "Azure TTS V2"),
-            ("siliconflow", "SiliconFlow TTS"),
-            ("gemini-tts", "Google Gemini TTS"),
+            ("azure-tts-v1", tr("Azure TTS V1")),
+            ("azure-tts-v2", tr("Azure TTS V2")),
+            ("siliconflow", tr("SiliconFlow TTS")),
+            ("gemini-tts", tr("Google Gemini TTS")),
         ]
 
         # 获取保存的TTS服务器，默认为v1
