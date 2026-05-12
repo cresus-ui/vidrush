@@ -1,6 +1,7 @@
 import math
 import os.path
 import re
+import gc
 from os import path
 
 from loguru import logger
@@ -290,6 +291,7 @@ def start(task_id, params: VideoParams, stop_at: str = "video"):
     if not audio_file:
         sm.state.update_task(task_id, state=const.TASK_STATE_FAILED)
         return
+    gc.collect()
 
     # Categorize script for intelligent transitions
     category = nlp.classify_script_category(video_script)
@@ -308,6 +310,7 @@ def start(task_id, params: VideoParams, stop_at: str = "video"):
                 if sfx_path:
                     # For now, we'll just assign a random timestamp or distribute them
                     sfx_materials.append({"path": sfx_path, "keyword": kw})
+    gc.collect()
 
     person_images = []
     if params.wiki_enabled:
@@ -322,6 +325,7 @@ def start(task_id, params: VideoParams, stop_at: str = "video"):
                     img_path = wiki.download_image(img_url, task_id, f"{person}_{i}")
                     if img_path:
                         person_images.append(img_path)
+    gc.collect()
 
     sm.state.update_task(task_id, state=const.TASK_STATE_PROCESSING, progress=30)
 
@@ -383,6 +387,7 @@ def start(task_id, params: VideoParams, stop_at: str = "video"):
     if type(params.video_concat_mode) is str:
         params.video_concat_mode = VideoConcatMode(params.video_concat_mode)
 
+    gc.collect()
     # 6. Generate final videos
     # person_images are already prepended to downloaded_videos above (line 368)
     final_video_paths, combined_video_paths = generate_final_videos(

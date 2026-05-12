@@ -722,7 +722,7 @@ with middle_panel:
             config.ui["voice_name"] = ""
 
         # 只有在有声音可选时才显示试听按钮
-        if friendly_names and st.button(tr("Play Voice")):
+        if friendly_names and st.button(tr("Play Voice"), key="play_voice_button"):
             play_content = params.video_subject
             if not play_content:
                 play_content = params.video_script
@@ -928,7 +928,7 @@ with right_panel:
                 st.info(tr("No Pexels API Keys currently"))
 
             new_key = st.text_input(tr("Add Pexels API Key"), key="pexels_new_key")
-            if st.button(tr("Add Pexels API Key")):
+            if st.button(tr("Add Pexels API Key"), key="add_pexels_key_button"):
                 if new_key and new_key not in config.app["pexels_api_keys"]:
                     config.app["pexels_api_keys"].append(new_key)
                     config.save_config()
@@ -942,7 +942,7 @@ with right_panel:
                 delete_key = st.selectbox(
                     tr("Select Pexels API Key to delete"), config.app["pexels_api_keys"], key="pexels_delete_key"
                 )
-                if st.button(tr("Delete Selected Pexels API Key")):
+                if st.button(tr("Delete Selected Pexels API Key"), key="delete_pexels_key_button"):
                     config.app["pexels_api_keys"].remove(delete_key)
                     config.save_config()
                     st.success(tr("Pexels API Key deleted successfully"))
@@ -958,7 +958,7 @@ with right_panel:
                 st.info(tr("No Pixabay API Keys currently"))
 
             new_key = st.text_input(tr("Add Pixabay API Key"), key="pixabay_new_key")
-            if st.button(tr("Add Pixabay API Key")):
+            if st.button(tr("Add Pixabay API Key"), key="add_pixabay_key_button"):
                 if new_key and new_key not in config.app["pixabay_api_keys"]:
                     config.app["pixabay_api_keys"].append(new_key)
                     config.save_config()
@@ -972,12 +972,12 @@ with right_panel:
                 delete_key = st.selectbox(
                     tr("Select Pixabay API Key to delete"), config.app["pixabay_api_keys"], key="pixabay_delete_key"
                 )
-                if st.button(tr("Delete Selected Pixabay API Key")):
+                if st.button(tr("Delete Selected Pixabay API Key"), key="delete_pixabay_key_button"):
                     config.app["pixabay_api_keys"].remove(delete_key)
                     config.save_config()
                     st.success(tr("Pixabay API Key deleted successfully"))
 
-start_button = st.button(tr("Generate Video"), use_container_width=True, type="primary")
+start_button = st.button(tr("Generate Video"), use_container_width=True, type="primary", key="generate_video_button")
 if start_button:
     config.save_config()
     task_id = str(uuid4())

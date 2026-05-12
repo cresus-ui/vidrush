@@ -329,7 +329,7 @@ def combine_videos(
                 
             # wirte clip to temp file
             clip_file = f"{output_dir}/temp-clip-{i+1}.mp4"
-            clip.write_videofile(clip_file, logger=None, fps=fps, codec=video_codec)
+            clip.write_videofile(clip_file, logger=None, fps=fps, codec=video_codec, ffmpeg_params=["-movflags", "+faststart"])
 
             # Store clip duration before closing
             clip_duration_saved = clip.duration
@@ -471,7 +471,9 @@ def combine_videos_with_transitions(
     for p in video_paths:
         try:
             clip = VideoFileClip(p)
-            clip_durations.append(clip.duration)
+            # Trim to max_clip_duration to avoid overly long videos
+            d = min(clip.duration, max_clip_duration)
+            clip_durations.append(d)
             clip.close()
         except Exception:
             clip_durations.append(max_clip_duration)
@@ -481,8 +483,10 @@ def combine_videos_with_transitions(
     # Build filter_complex: first normalize all inputs to same resolution/fps
     filter_parts = []
     for i in range(len(video_paths)):
+        d = clip_durations[i]
         filter_parts.append(
-            f"[{i}:v]scale={video_width}:{video_height}:force_original_aspect_ratio=decrease,"
+            f"[{i}:v]trim=duration={d},setpts=PTS-STARTPTS,"
+            f"scale={video_width}:{video_height}:force_original_aspect_ratio=decrease,"
             f"pad={video_width}:{video_height}:(ow-iw)/2:(oh-ih)/2,fps={fps},"
             f"setsar=1,format=yuv420p[n{i}]"
         )
@@ -536,6 +540,7 @@ def combine_videos_with_transitions(
         "-map", "[outv]",
         "-c:v", "libx264",
         "-pix_fmt", "yuv420p",
+        "-movflags", "+faststart",
         "-threads", str(threads or 2),
         combined_video_path,
     ]
@@ -729,6 +734,7 @@ def generate_video(
         audio_bitrate=audio_bitrate,
         temp_audiofile_path=output_dir,
         threads=params.n_threads or 2,
+        ffmpeg_params=["-movflags", "+faststart"],
         logger=None,
         fps=fps,
     )
@@ -800,7 +806,7 @@ def preprocess_video(materials: List[MaterialInfo], clip_duration=4, category="f
 
                 # Output the video to a file.
                 video_file = f"{material_source_path}.mp4"
-                final_clip.write_videofile(video_file, fps=30, logger=None)
+                final_clip.write_videofile(video_file, fps=30, logger=None, ffmpeg_params=["-movflags", "+faststart"])
                 close_clip(clip)
                 close_clip(final_clip)
                 material.url = video_file
