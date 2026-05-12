@@ -44,7 +44,7 @@ def tr(key):
     return loc.get("Translation", {}).get(key, key)
 
 st.set_page_config(
-    page_title="MoneyPrinterTurbo",
+    page_title="Davi-vidrush",
     page_icon="🤖",
     layout="wide",
     initial_sidebar_state="auto",
@@ -79,7 +79,7 @@ if "local_video_materials" not in st.session_state:
 title_col, lang_col = st.columns([3, 1])
 
 with title_col:
-    st.title(f"MoneyPrinterTurbo v{config.project_version}")
+    st.title(f"Davi-vidrush v{config.project_version}")
 
 with lang_col:
     display_languages = []

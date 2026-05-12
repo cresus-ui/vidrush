@@ -59,12 +59,12 @@ hostname = socket.gethostname()
 log_level = _cfg.get("log_level", "DEBUG")
 listen_host = _cfg.get("listen_host", "0.0.0.0")
 listen_port = _cfg.get("listen_port", 8080)
-project_name = _cfg.get("project_name", "MoneyPrinterTurbo")
+project_name = _cfg.get("project_name", "Davi-vidrush")
 project_description = _cfg.get(
     "project_description",
-    "<a href='https://github.com/harry0703/MoneyPrinterTurbo'>https://github.com/harry0703/MoneyPrinterTurbo</a>",
+    "<a href='https://github.com/cresus-ui/vidrush'>https://github.com/cresus-ui/vidrush</a>",
 )
-project_version = _cfg.get("project_version", "1.2.7")
+project_version = _cfg.get("project_version", "1.0")
 reload_debug = False
 
 app["redis_host"] = os.getenv(
