@@ -8,6 +8,9 @@ def search_person(name: str) -> dict:
     Step 1: Use Wikipedia API to detect if the person exists and get their exact canonical name.
     """
     search_url = "https://en.wikipedia.org/w/api.php"
+    headers = {
+        "User-Agent": "Davi-vidrush/1.0 (https://github.com/cresus-ui/vidrush; contact@example.com)"
+    }
     params = {
         "action": "query",
         "format": "json",
@@ -17,7 +20,7 @@ def search_person(name: str) -> dict:
     }
 
     try:
-        response = requests.get(search_url, params=params, timeout=10)
+        response = requests.get(search_url, params=params, headers=headers, timeout=10)
         response.raise_for_status()
         results = response.json().get("query", {}).get("search", [])
         
@@ -44,6 +47,9 @@ def get_wikimedia_images(title: str, limit: int = 5) -> list:
     """
     # 1. First find images on the Wikipedia page
     search_url = "https://en.wikipedia.org/w/api.php"
+    headers = {
+        "User-Agent": "Davi-vidrush/1.0 (https://github.com/cresus-ui/vidrush; contact@example.com)"
+    }
     params = {
         "action": "query",
         "format": "json",
@@ -53,7 +59,7 @@ def get_wikimedia_images(title: str, limit: int = 5) -> list:
     }
 
     try:
-        response = requests.get(search_url, params=params, timeout=10)
+        response = requests.get(search_url, params=params, headers=headers, timeout=10)
         response.raise_for_status()
         pages = response.json().get("query", {}).get("pages", {})
         
@@ -85,7 +91,7 @@ def get_wikimedia_images(title: str, limit: int = 5) -> list:
             "titles": image_batch
         }
         
-        res = requests.get(commons_url, params=commons_params, timeout=10)
+        res = requests.get(commons_url, params=commons_params, headers=headers, timeout=10)
         res_pages = res.json().get("query", {}).get("pages", {})
         for img_page in res_pages.values():
             info = img_page.get("imageinfo", [{}])[0]
@@ -116,7 +122,10 @@ def download_image(url: str, task_id: str, filename: str) -> str:
         return file_path
 
     try:
-        response = requests.get(url, timeout=20)
+        headers = {
+            "User-Agent": "Davi-vidrush/1.0 (https://github.com/cresus-ui/vidrush; contact@example.com)"
+        }
+        response = requests.get(url, headers=headers, timeout=20)
         response.raise_for_status()
         with open(file_path, "wb") as f:
             f.write(response.content)
