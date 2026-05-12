@@ -113,6 +113,10 @@ def download_image(url: str, task_id: str, filename: str) -> str:
     if not os.path.exists(img_dir):
         os.makedirs(img_dir)
 
+    # Clean the URL from query parameters (like ?utm_source...)
+    if "?" in url:
+        url = url.split("?")[0]
+
     # Sanitize filename
     safe_filename = "".join([c for c in filename if c.isalnum() or c in "._- "]).strip()
     ext = os.path.splitext(url)[1].lower() or ".jpg"
@@ -123,7 +127,8 @@ def download_image(url: str, task_id: str, filename: str) -> str:
 
     try:
         headers = {
-            "User-Agent": "Davi-vidrush/1.0 (https://github.com/cresus-ui/vidrush; contact@example.com)"
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "Accept": "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8"
         }
         response = requests.get(url, headers=headers, timeout=20)
         response.raise_for_status()
